@@ -30,6 +30,8 @@ plot(pressure)
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
+##Data Exploration
+
 ```{r}
 ERdogs <- read_csv("ERdogs.csv")
 head(ERdogs)
@@ -38,8 +40,42 @@ ERdogs.subset <- dplyr::select(ERdogs, 'Record ID', Age, Gender, Group, 'Patient
 head(ERdogs.subset)
 summary(ERdogs.subset)
 ERdogs.subset2 <- group_by(ERdogs.subset, Group)
-summarize_(ERdogs.subset2, 'Patient  Anxiety rating based on image above'=mean('Patient  Anxiety rating based on image above', na.rm = TRUE)
+summarize(ERdogs.subset2,'Patient  Anxiety rating based on image above',mean('Patient  Anxiety rating based on image above', na.rm = TRUE))
 
+#Convert numeric to factor
+ERdogs$`Patient  Anxiety rating based on image above`<- as.factor(ERdogs$`Patient  Anxiety rating based on image above`)
+ERdogs$`Patient  Depression rating based on image above`<- as.factor(ERdogs$`Patient  Depression rating based on image above`)
+ERdogs$`Patient  Pain rating based on image above`<- as.factor(ERdogs$`Patient  Pain rating based on image above`)
+#Check to see that it converted 
+str(ERdogs$`Patient  Anxiety rating based on image above`)
+str(ERdogs$`Patient  Depression rating based on image above`)
+str(ERdogs$`Patient  Pain rating based on image above`)
 
+```
+
+##Data Visualization
+
+```{r}
+#Bar plots showing these variables as factors with 11 levels 
+ggplot(ERdogs) +
+  aes(x = `Patient  Anxiety rating based on image above`) +
+  geom_bar() +
+  theme_cowplot()+
+  xlab("Group") + 
+  ylab("Number of Participants")
+
+ggplot(ERdogs) +
+  aes(x = `Patient  Depression rating based on image above`) +
+  geom_bar() +
+  theme_cowplot()+
+  xlab("Group") + 
+  ylab("Number of Participants")
+
+ggplot(ERdogs) +
+  aes(x = `Patient  Pain rating based on image above`) +
+  geom_bar() +
+  theme_cowplot()+
+  xlab("Group") + 
+  ylab("Number of Participants")
 ```
 
