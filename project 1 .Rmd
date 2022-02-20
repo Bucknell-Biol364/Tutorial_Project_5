@@ -39,6 +39,7 @@ str(ERdogs)
 ERdogs <- drop_na(ERdogs, 'Patient  Anxiety rating based on image above')
 ERdogs <- drop_na(ERdogs, 'Patient  Pain rating based on image above')
 ERdogs <- drop_na(ERdogs, 'Patient  Depression rating based on image above')
+ERdogs <- drop_na(ERdogs, `Heart Rate`)
 ERdogs.subset <- dplyr::select(ERdogs, 'Record ID', Age, Gender, Group, 'Patient  Anxiety rating based on image above', 'Patient  Pain rating based on image above', 'Patient  Depression rating based on image above')
 head(ERdogs.subset)
 summary(ERdogs.subset)
@@ -53,19 +54,18 @@ ERdogs$`Patient  Pain rating based on image above`<- as.factor(ERdogs$`Patient  
 str(ERdogs$`Patient  Anxiety rating based on image above`)
 str(ERdogs$`Patient  Depression rating based on image above`)
 str(ERdogs$`Patient  Pain rating based on image above`)
+#Convert characters into numeric objects
+ERdogs$`Heart Rate`<- as.numeric(ERdogs$`Heart Rate`)
 
 ```
 
 ##Data Visualization
-
+   Visual representations of data are useful to illustrate general trends and relationships within the data set. Choosing which graph to make will depend on how many variables you are exploring and whether your variables are categorical or numerical. If using numerical variables, it is also important to consider whether the variable is discrete (only takes on specific values) or continuous (takes on any value). 
+   
+A bar graph provides the best representation of a single categorical variable or a single discrete numerical variable. 
 ```{r}
-#Bar plots showing these variables as factors with 11 levels 
-ggplot(ERdogs) +
-  aes(x = `Patient  Anxiety rating based on image above`) 
-```
-
-
-```{r}
+ggplot(ERdogs)+
+   aes(x = `Patient  Anxiety rating based on image above`) +
 geom_bar() +
   theme_cowplot()+
   xlab("Anxiety Rating") + 
@@ -85,6 +85,13 @@ ggplot(ERdogs) +
   xlab("Pain Rating") + 
   ylab("Number of Participants")
 
+#xlab labels the x-axis
+#ylab labels the y-axis
+```
+
+A grouped bar graph is the best representation when comparing two categorical variables.
+```{r}
+
 ggplot(ERdogs) +
   aes(x = `Patient  Pain rating based on image above`, color = Group, fill = Group) +
   geom_bar(binwidth = 0.5, position = "dodge") +
@@ -100,4 +107,35 @@ ggplot(ERdogs) +
   geom_bar(binwidth = 0.5, position = "dodge") +
   theme_cowplot()
 ```
+
+A Histogram provides the best representation of a single continuous numerical variable. 
+```{r}
+ggplot(ERdogs, aes(x=`Heart Rate`)) + 
+  geom_histogram(color="black", fill="white") +
+  theme_cowplot()+
+  xlab("Heart Rate (BPM)")
+```
+
+
+A strip chart or box plot would be best to use when comparing a numerical variable with a categorical variable. 
+```{r}
+# Strip Chart
+ggplot(ERdogs, aes(x = Group, y= `Heart Rate`, fill = Group)) +
+  geom_jitter()+
+   xlab("Group") + 
+  ylab("Hear Rate")
+
+#Box plot
+ggplot(ERdogs) +
+  aes(x = Group , y = `Heart Rate` , fill=Group) +
+  geom_boxplot() +
+geom_jitter(color="black", size=0.4, alpha=0.9)+
+  theme_cowplot()+
+   xlab("Group") + 
+  ylab("Hear Rate")
+
+#geom_jitter shows all the data points on each graph
+```
+
+##Hypothesis Testing 
 
