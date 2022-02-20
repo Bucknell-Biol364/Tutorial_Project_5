@@ -36,6 +36,9 @@ Note that the `echo = FALSE` parameter was added to the code chunk to prevent pr
 ERdogs <- read_csv("ERdogs.csv")
 head(ERdogs)
 str(ERdogs)
+ERdogs <- drop_na(ERdogs, 'Patient  Anxiety rating based on image above')
+ERdogs <- drop_na(ERdogs, 'Patient  Pain rating based on image above')
+ERdogs <- drop_na(ERdogs, 'Patient  Depression rating based on image above')
 ERdogs.subset <- dplyr::select(ERdogs, 'Record ID', Age, Gender, Group, 'Patient  Anxiety rating based on image above', 'Patient  Pain rating based on image above', 'Patient  Depression rating based on image above')
 head(ERdogs.subset)
 summary(ERdogs.subset)
@@ -58,24 +61,43 @@ str(ERdogs$`Patient  Pain rating based on image above`)
 ```{r}
 #Bar plots showing these variables as factors with 11 levels 
 ggplot(ERdogs) +
-  aes(x = `Patient  Anxiety rating based on image above`) +
-  geom_bar() +
+  aes(x = `Patient  Anxiety rating based on image above`) 
+```
+
+
+```{r}
+geom_bar() +
   theme_cowplot()+
-  xlab("Group") + 
+  xlab("Anxiety Rating") + 
   ylab("Number of Participants")
 
 ggplot(ERdogs) +
   aes(x = `Patient  Depression rating based on image above`) +
   geom_bar() +
   theme_cowplot()+
-  xlab("Group") + 
+  xlab("Depression Rating") + 
   ylab("Number of Participants")
 
 ggplot(ERdogs) +
   aes(x = `Patient  Pain rating based on image above`) +
   geom_bar() +
   theme_cowplot()+
-  xlab("Group") + 
+  xlab("Pain Rating") + 
   ylab("Number of Participants")
+
+ggplot(ERdogs) +
+  aes(x = `Patient  Pain rating based on image above`, color = Group, fill = Group) +
+  geom_bar(binwidth = 0.5, position = "dodge") +
+  theme_cowplot()
+
+ggplot(ERdogs) +
+  aes(x = `Patient  Anxiety rating based on image above`, color = Group, fill = Group) +
+  geom_bar(binwidth = 0.5, position = "dodge") +
+  theme_cowplot()
+
+ggplot(ERdogs) +
+  aes(x = `Patient  Depression rating based on image above`, color = Group, fill = Group) +
+  geom_bar(binwidth = 0.5, position = "dodge") +
+  theme_cowplot()
 ```
 
