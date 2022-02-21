@@ -148,6 +148,8 @@ shapiro.test(ERdogs$`Heart Rate` [ERdogs$`Patient  Anxiety rating based on image
 
 ```
 
+
+One way anova testing used to compare categorical(Pain/Anxiety/Depression Rating) and numerical (Heart Rate) variables. 
 ```{r}
 one.way <- aov(`Heart Rate`~`Patient  Pain rating based on image above` , data=ERdogs)
 summary(one.way)
@@ -156,9 +158,15 @@ summary(one.way)
 one.way <- aov(`Heart Rate`~`Patient  Depression rating based on image above` , data=ERdogs)
 summary(one.way)
 
+```
 
+
+
+```{r}
 chisq.test(ERdogs.subset$`Patient  Depression rating based on image above`, ERdogs.subset$Group)
 chisq.test(ERdogs.subset$`Patient  Anxiety rating based on image above`, ERdogs.subset$Group)
 chisq.test(ERdogs.subset$`Patient  Pain rating based on image above`, ERdogs.subset$Group)
 ```
 
+#Acknowledgements
+https://data-flair.training/blogs/chi-square-test-in-r/
