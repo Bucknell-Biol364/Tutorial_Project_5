@@ -123,7 +123,7 @@ A strip chart or box plot would be best to use when comparing a numerical variab
 ggplot(ERdogs, aes(x = Group, y= `Heart Rate`, fill = Group)) +
   geom_jitter()+
    xlab("Group") + 
-  ylab("Hear Rate")
+  ylab("Heart Rate")
 
 #Box plot
 ggplot(ERdogs) +
@@ -132,10 +132,33 @@ ggplot(ERdogs) +
 geom_jitter(color="black", size=0.4, alpha=0.9)+
   theme_cowplot()+
    xlab("Group") + 
-  ylab("Hear Rate")
+  ylab("Heart Rate")
 
 #geom_jitter shows all the data points on each graph
 ```
 
 ##Hypothesis Testing 
+Shapiro testing checks to see if the data is normally distributed. You can only perform shapiro testing for numerical values not categorical.
+```{r}
+shapiro.test(ERdogs$`Heart Rate`)
+shapiro.test(ERdogs$`Heart Rate` [ERdogs$`Patient  Pain rating based on image above`])
+shapiro.test(ERdogs$`Heart Rate` [ERdogs$`Patient  Depression rating based on image above`])
+shapiro.test(ERdogs$`Heart Rate` [ERdogs$`Patient  Anxiety rating based on image above`])
+##all heart rates are normally distributed (p-val<0.05) when separated into each category
+
+```
+
+```{r}
+one.way <- aov(`Heart Rate`~`Patient  Pain rating based on image above` , data=ERdogs)
+summary(one.way)
+one.way <- aov(`Heart Rate`~`Patient  Anxiety rating based on image above` , data=ERdogs)
+summary(one.way)
+one.way <- aov(`Heart Rate`~`Patient  Depression rating based on image above` , data=ERdogs)
+summary(one.way)
+
+
+chisq.test(`Patient  Depression rating based on image above`~'Group')
+chisq.test(`Patient  Anxiety rating based on image above`~'Group')
+chisq.test(`Patient  Pain rating based on image above`~'Group')
+```
 
