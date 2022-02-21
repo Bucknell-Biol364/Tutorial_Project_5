@@ -157,8 +157,8 @@ one.way <- aov(`Heart Rate`~`Patient  Depression rating based on image above` , 
 summary(one.way)
 
 
-chisq.test(`Patient  Depression rating based on image above`~'Group')
-chisq.test(`Patient  Anxiety rating based on image above`~'Group')
-chisq.test(`Patient  Pain rating based on image above`~'Group')
+chisq.test(ERdogs.subset$`Patient  Depression rating based on image above`, ERdogs.subset$Group)
+chisq.test(ERdogs.subset$`Patient  Anxiety rating based on image above`, ERdogs.subset$Group)
+chisq.test(ERdogs.subset$`Patient  Pain rating based on image above`, ERdogs.subset$Group)
 ```
 
