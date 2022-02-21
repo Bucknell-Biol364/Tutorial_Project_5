@@ -161,12 +161,13 @@ summary(one.way)
 ```
 
 
-
+Chi Square testing is used to see if two categorical variables have significant correlation. Here, we are seeing if the patient ratings have any correlation with which group they are in (dog or no dog.)
 ```{r}
 chisq.test(ERdogs.subset$`Patient  Depression rating based on image above`, ERdogs.subset$Group)
 chisq.test(ERdogs.subset$`Patient  Anxiety rating based on image above`, ERdogs.subset$Group)
 chisq.test(ERdogs.subset$`Patient  Pain rating based on image above`, ERdogs.subset$Group)
 ```
+
 
 #Acknowledgements
 https://data-flair.training/blogs/chi-square-test-in-r/
