@@ -166,7 +166,9 @@ Chi Square testing is used to see if two categorical variables have significant 
 chisq.test(ERdogs.subset$`Patient  Depression rating based on image above`, ERdogs.subset$Group)
 chisq.test(ERdogs.subset$`Patient  Anxiety rating based on image above`, ERdogs.subset$Group)
 chisq.test(ERdogs.subset$`Patient  Pain rating based on image above`, ERdogs.subset$Group)
+##All p-values are greater than 0.05 which means there is no significant correlation between the variables.
 ```
+
 
 
 #Acknowledgements
