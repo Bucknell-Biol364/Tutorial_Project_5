@@ -1,8 +1,12 @@
 ---
-title: "Project 1"
+title: "Tutorial Project 5"
 output: html_document
+author: Darby Kleinert, Shannon McCollum, Julia Illiano
+date: 21 Feb 2022
 ---
+   This guided tutorial for Biol 202 will show the basics of how to use R and R studio to explore a data set, visualize the data, and perform basic statistical analysis of a hypothesis. Let's begin by learning about the main features of R studio that you will use. This window is where you can add and save any code chunks and text. To add code chunks, click on the green "C" located at the top of this window. To add comments, type anywhere in the white space within this box. 
 
+Before we start exploring the data, we first need to load all the necessary packages. It is good practice to always load your packages first. 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 if (!require("UsingR")) install.packages("UsingR"); library(UsingR)
@@ -10,42 +14,29 @@ if (!require("cowplot")) install.packages("cowplot"); library(cowplot)
 if (!require("tidyverse")) install.packages("tidyverse"); library(tidyverse)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
-
 ##Data Exploration
+   This tutorial will use a data set taken from a study published in the PLOS Journal that explored the effect of therapy dogs on the anxiety, depression, and pain rating of patients (Article link:https://doi.org/10.1371/journal.pone.0209232). 
 
+We first need to load the data set into R studio using the read function.
 ```{r}
 ERdogs <- read_csv("ERdogs.csv")
-head(ERdogs)
-str(ERdogs)
+```
+Now, we can look at the overall structure of the data set to see if all the variables loaded in properly:
+```{r}
+ERdogs #View the entire data set
+head(ERdogs) #View the first ten columns
+tail(ERdogs) #View the last ten columns 
+str(ERdogs) #View each object 
+```
+Check to see if there are any NA values in your variables of interest. If there are, you can choose to keep them or remove them. In this case, we are removing NA values using this basic code:
+```{r}
 ERdogs <- drop_na(ERdogs, 'Patient  Anxiety rating based on image above')
 ERdogs <- drop_na(ERdogs, 'Patient  Pain rating based on image above')
 ERdogs <- drop_na(ERdogs, 'Patient  Depression rating based on image above')
 ERdogs <- drop_na(ERdogs, `Heart Rate`)
-ERdogs.subset <- dplyr::select(ERdogs, 'Record ID', Age, Gender, Group, 'Patient  Anxiety rating based on image above', 'Patient  Pain rating based on image above', 'Patient  Depression rating based on image above')
-head(ERdogs.subset)
-summary(ERdogs.subset)
-ERdogs.subset2 <- group_by(ERdogs.subset, Group)
-summarize(ERdogs.subset2,'Patient  Anxiety rating based on image above',mean('Patient  Anxiety rating based on image above', na.rm = TRUE))
-
+```
+Also, check to see that your variables of interest are showing up correctly. You will be working with categorical variables, continuous numeric variables (takes on any value), and discrete numeric variables (only takes on specific values). Make sure that categorical variables are showing up as characters, continuous numeric variables are showing up as numeric, and discrete numeric variables are showing up as factors. If they are not, use this format to change them:
+```{r}
 #Convert numeric to factor
 ERdogs$`Patient  Anxiety rating based on image above`<- as.factor(ERdogs$`Patient  Anxiety rating based on image above`)
 ERdogs$`Patient  Depression rating based on image above`<- as.factor(ERdogs$`Patient  Depression rating based on image above`)
@@ -56,11 +47,19 @@ str(ERdogs$`Patient  Depression rating based on image above`)
 str(ERdogs$`Patient  Pain rating based on image above`)
 #Convert characters into numeric objects
 ERdogs$`Heart Rate`<- as.numeric(ERdogs$`Heart Rate`)
-
+#Check to see that it converted
+str(ERdogs$`Heart Rate`)
+```
+If you are working with a larger data set, like this one, you can choose to select only certain variables to work with using the dplyr function. The "<-" symbol is called the assign operator and will be used to assign value and create new objects. In this case, we are making a subset of the data that contains only the selected variables. 
+```{r}
+ERdogs.subset <- dplyr::select(ERdogs, `Record ID`, Age, Gender, Group, `Patient  Anxiety rating based on image above`, `Patient  Pain rating based on image above`, `Patient  Depression rating based on image above`,`Heart Rate`)
+head(ERdogs.subset)
+tail(ERdogs.subset)
+str(ERdogs.subset)
 ```
 
 ##Data Visualization
-   Visual representations of data are useful to illustrate general trends and relationships within the data set. Choosing which graph to make will depend on how many variables you are exploring and whether your variables are categorical or numerical. If using numerical variables, it is also important to consider whether the variable is discrete (only takes on specific values) or continuous (takes on any value). 
+   Visual representations of data are useful to illustrate general trends and relationships within the data set. Choosing which graph to make will depend on how many variables you are exploring and whether your variables are categorical or numerical (continuous or discrete). 
    
 A bar graph provides the best representation of a single categorical variable or a single discrete numerical variable. 
 ```{r}
@@ -147,8 +146,6 @@ shapiro.test(ERdogs$`Heart Rate` [ERdogs$`Patient  Anxiety rating based on image
 ##all heart rates are normally distributed (p-val<0.05) when separated into each category
 
 ```
-
-
 One way anova testing used to compare categorical(Pain/Anxiety/Depression Rating) and numerical (Heart Rate) variables. 
 ```{r}
 one.way <- aov(`Heart Rate`~`Patient  Pain rating based on image above` , data=ERdogs)
@@ -161,8 +158,6 @@ summary(one.way)
 
 ###OBSERVATIONS DELETED DUE TO MISSINGNESS???
 ```
-
-
 Chi Square testing is used to see if two categorical variables have significant correlation. Here, we are seeing if the patient ratings have any correlation with which group they are in (dog or no dog.)
 ```{r}
 chisq.test(ERdogs.subset$`Patient  Depression rating based on image above`, ERdogs.subset$Group)
@@ -173,7 +168,19 @@ chisq.test(ERdogs.subset$`Patient  Pain rating based on image above`, ERdogs.sub
 #CHI SQUARE APPROXIMATION MAY BE INCORRECT???
 ```
 
+##Assignment
+
+After you thoroughly go through the three sections above, test your own knowledge by going through these steps: 
+
+1) Choose new variables from the dataset and explore them using the tools given in Section I: Data Exploration. Pay close attention to the type of variables you are working with. 
+
+2) Make a hypothesis using those new variables
+
+3) To test the hypothesis, select appropriate graphs from Section 2: Data Visualization to visualize the data and make conclusions
+
+4) Use the tools given in Section 3: Hypothesis Testing to use statistical tests to analyse your hypothesis and make final conclusions. Was your hypothesis supported? How can you tell? 
 
 
 #Acknowledgements
 https://data-flair.training/blogs/chi-square-test-in-r/
+https://doi.org/10.1371/journal.pone.0209232
