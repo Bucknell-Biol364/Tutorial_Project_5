@@ -157,7 +157,9 @@ one.way <- aov(`Heart Rate`~`Patient  Anxiety rating based on image above` , dat
 summary(one.way)
 one.way <- aov(`Heart Rate`~`Patient  Depression rating based on image above` , data=ERdogs)
 summary(one.way)
+##All p-values are greater than 0.05 which means there is no significant evidence between heart rate and different patient ratings. 
 
+###OBSERVATIONS DELETED DUE TO MISSINGNESS???
 ```
 
 
@@ -167,6 +169,8 @@ chisq.test(ERdogs.subset$`Patient  Depression rating based on image above`, ERdo
 chisq.test(ERdogs.subset$`Patient  Anxiety rating based on image above`, ERdogs.subset$Group)
 chisq.test(ERdogs.subset$`Patient  Pain rating based on image above`, ERdogs.subset$Group)
 ##All p-values are greater than 0.05 which means there is no significant correlation between the variables.
+
+#CHI SQUARE APPROXIMATION MAY BE INCORRECT???
 ```
 
 
